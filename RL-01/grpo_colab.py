@@ -79,15 +79,27 @@ trainer.train()
 print("\nDone. Check the reward numbers above.")
 
 # ── PART 5: TEST ──────────────────────────────────────────
+# ── MERGE AND SAVE FULL MODEL ─────────────────────────────
+# This creates a complete standalone model you can load anywhere
 from transformers import AutoTokenizer, AutoModelForCausalLM
+from peft import PeftModel
 
-model = AutoModelForCausalLM.from_pretrained("./grpo-output")
+!pip install peft -q
+
+# load base model
+base = AutoModelForCausalLM.from_pretrained("Qwen/Qwen2.5-0.5B-Instruct")
+
+# apply your trained weights on top
+model = PeftModel.from_pretrained(base, "./grpo-output")
+
+# merge into one single model and save it
+model = model.merge_and_unload()
+model.save_pretrained("./grpo-final")
+
 tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen2.5-0.5B-Instruct")
+tokenizer.save_pretrained("./grpo-final")
 
-question = "Janet has 24 apples. She gives half to her friend. How many does she have left? Write your answer after ####."
-inputs = tokenizer(question, return_tensors="pt")
-outputs = model.generate(**inputs, max_new_tokens=128)
-print(tokenizer.decode(outputs[0], skip_special_tokens=True))
+print("Full model saved to ./grpo-final")
 
 # ── PART 6: SAVE TO GOOGLE DRIVE ──────────────────────────
 # Uncomment and run separately before your session ends
