@@ -77,34 +77,3 @@ trainer = GRPOTrainer(
 
 trainer.train()
 print("\nDone. Check the reward numbers above.")
-
-# ── PART 5: TEST ──────────────────────────────────────────
-# ── MERGE AND SAVE FULL MODEL ─────────────────────────────
-# This creates a complete standalone model you can load anywhere
-from transformers import AutoTokenizer, AutoModelForCausalLM
-from peft import PeftModel
-
-!pip install peft -q
-
-# load base model
-base = AutoModelForCausalLM.from_pretrained("Qwen/Qwen2.5-0.5B-Instruct")
-
-# apply your trained weights on top
-model = PeftModel.from_pretrained(base, "./grpo-output")
-
-# merge into one single model and save it
-model = model.merge_and_unload()
-model.save_pretrained("./grpo-final")
-
-tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen2.5-0.5B-Instruct")
-tokenizer.save_pretrained("./grpo-final")
-
-print("Full model saved to ./grpo-final")
-
-# ── PART 6: SAVE TO GOOGLE DRIVE ──────────────────────────
-# Uncomment and run separately before your session ends
-#
-# from google.colab import drive
-# drive.mount('/content/drive')
-# import shutil
-# shutil.copytree("./grpo-output", "/content/drive/MyDrive/grpo-output")
