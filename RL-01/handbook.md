@@ -5,7 +5,7 @@ Still has questions while reading? Toss the handbook into Claude or Gemini, then
 Remember, Machine Learning knowledge can not be understand all at once, but it does not prevent you from using and training them, keep going while try to grasp every concepts!
 > 
 
-Alterntive to read this notion page inside, same content, better readibility! 
+Alterntive to read this notion page inside: https://www.notion.so/RL-01-Handbook-Everything-You-Need-to-Know-331e6ee3602f81f8bcb7c5a450486f60?source=copy_link, same content, better readibility! 
 
 ---
 
